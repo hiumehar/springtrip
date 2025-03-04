@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <!-- ビューポート設定 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>春の花見旅行プラン ～10箇所のご提案～</title>
+  <!-- 内部スタイルシート -->
+  <style>
+    /* リセット */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      background-color: #2c3e50;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    /* コンテナのグリッドレイアウト（モバイルファースト） */
+    .container {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    /* タブナビゲーション */
+    .tabs {
+      display: flex;
+      overflow-x: auto;
+      border-bottom: 2px solid #ccc;
+    }
+    .tab {
+      position: relative;
+      flex: 0 0 auto;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      background-color: #eee;
+      margin-right: 0.5rem;
+      border-radius: 5px 5px 0 0;
+      transition: background 0.3s;
+    }
+    .tab:hover {
+      background-color: #ddd;
+    }
+    .tab.active {
+      background-color: #fff;
+      border-bottom: 2px solid #fff;
+    }
+    /* 吹き出しスタイル（タブ用） */
+    .recommendation-bubble-tab {
+      position: absolute;
+      top: 0px;
+      right: -10px;
+      background-color: #f39c12;
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 0.8rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      z-index: 1;
+    }
+    /* メインコンテンツのレイアウト */
+    .content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media(min-width: 768px) {
+      .content {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    /* プラン詳細カード */
+    .plan-details {
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .plan-details h2 {
+      margin-bottom: 0.5rem;
+      font-size: 1.3rem;
+    }
+    .plan-details p {
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+    /* ふきだしスタイル（プラン詳細内用） */
+    .recommendation-bubble {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      background-color: #f39c12;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    .recommendation-bubble:after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 20px;
+      border-width: 10px 10px 0;
+      border-style: solid;
+      border-color: #f39c12 transparent;
+      display: block;
+      width: 0;
+    }
+    /* 画像コンテナ（削除対象） */
+    .image-container {
+      display: none;
+    }
+    /* チャートコンテナ */
+    #chart, #lineChart {
+      background-color: #fff;
+      border-radius: 5px;
+      padding: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-top: 1rem;
+    }
+    /* ツールチップ */
+    .tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 0.5rem;
+      border-radius: 3px;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>春の花見旅行プラン ～10箇所のご提案～</h1>
+    <p>東京発1泊2日、予算1人5～7万円、温泉宿優先。</p>
+  </header>
+  
+  <div class="container">
+    <!-- タブナビゲーション -->
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-tab="plan1">プラン1<br>奈良・吉野山</div>
+      <div class="tab" data-tab="plan2">プラン2<br>青森・弘前公園</div>
+      <div class="tab" data-tab="plan3">プラン3<br>長野・高遠城址</div>
+      <div class="tab" data-tab="plan4">プラン4<br>秋田・角館</div>
+      <div class="tab" data-tab="plan5">プラン5<br>岩手・北上展勝地</div>
+      <div class="tab" data-tab="plan6">
+        プラン6<br>宮城・白石川堤
+        <span class="recommendation-bubble-tab">おすすめ</span>
+      </div>
+      <div class="tab" data-tab="plan7">プラン7<br>福島・花見山公園</div>
+      <div class="tab" data-tab="plan8">プラン8<br>会津若松・鶴ヶ城</div>
+      <div class="tab" data-tab="plan9">プラン9<br>岡山・津山城</div>
+      <div class="tab" data-tab="plan10">プラン10<br>群馬・赤城南面</div>
+    </div>
+
+    <!-- メインコンテンツ：プラン詳細とチャート -->
+    <div class="content">
+      <!-- プラン詳細エリア -->
+      <div id="planContent" class="plan-details">
+        <!-- 初期表示はプラン1（下記は元々のテキスト） -->
+        <h2>プラン1: 奈良・吉野山</h2>
+        <p><span class="section-title">アクセス:</span> 東京駅から新幹線で京都駅または新大阪駅へ、近鉄特急に乗り換え大和八木・橿原神宮前経由で吉野駅下車。</p>
+        <p><span class="section-title">アクセス時間:</span> 約270分</p>
+        <p><span class="section-title">宿泊:</span> 吉野山周辺の旅館（花矢倉展望台近くなど）。</p>
+        <p><span class="section-title">観光/寄り道:</span> 中千本エリアの桜散策、吉水神社、金峯山寺など。夜はライトアップ夜桜も楽しめる。</p>
+        <p><span class="section-title">概算費用:</span> 約6～7万円</p>
+        <p><span class="section-title">花見時期:</span> 例年4月上旬～中旬</p>
+        <p><span class="section-title">ポイント:</span> 約3万本の桜が階層的に咲き誇る圧巻の景色。歴史と文化も豊か。</p>
+      </div>
+
+      <!-- 費用比較チャート -->
+      <div id="chart">
+        <h2 style="text-align:center;">各プランの概算費用比較 (万円)</h2>
+        <svg width="100%" height="300"></svg>
+      </div>
+    </div>
+    <!-- アクセス時間比較の線グラフ -->
+    <div id="lineChart">
+      <h2 style="text-align:center;">各プランのアクセス時間比較 (分)</h2>
+      <svg id="lineChartSvg" width="100%" height="300"></svg>
+    </div>
+  </div>
+
+  <!-- ツールチップ -->
+  <div class="tooltip" id="tooltip"></div>
+
+  <!-- 外部ライブラリ：D3.js -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <!-- JavaScript：タブ切替・プラン内容更新とチャート描画 -->
+  <script>
+    // 各プランのテキスト内容に、元々のテキストに加え、動画を埋め込むHTMLを定義
+    const plans = {
+      plan1: `
+        <h2>プラン1: 奈良・吉野山</h2>
+        <p><span class="section-title">アクセス:</span> 東京駅から新幹線で京都駅または新大阪駅へ、近鉄特急に乗り換え大和八木・橿原神宮前経由で吉野駅下車。</p>
+        <p><span class="section-title">アクセス時間:</span> 約270分</p>
+        <p><span class="section-title">宿泊:</span> 吉野山周辺の旅館（花矢倉展望台近くなど）。</p>
+        <p><span class="section-title">観光/寄り道:</span> 中千本エリアの桜散策、吉水神社、金峯山寺など。夜はライトアップ夜桜も楽しめる。</p>
+        <p><span class="section-title">概算費用:</span> 約6～7万円</p>
+        <p><span class="section-title">花見時期:</span> 例年4月上旬～中旬</p>
+        <p><span class="section-title">ポイント:</span> 約3万本の桜が階層的に咲き誇る圧巻の景色。歴史と文化も豊か。</p>
+        <hr>
+        <p><strong>動画例: 【吉野山 桜】〜感動の吉野桜ドライブ〜</strong></p>
+        <p>奈良・吉野山の満開の桜とドライブ中の絶景を収めた動画です。</p>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/abc123XYZ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      `,
+      plan2: `
+        <h2>プラン2: 青森・弘前公園</h2>
+        <p><span class="section-title">アクセス:</span> 東京駅から東北新幹線で新青森駅まで約3時間、奥羽本線で弘前駅へ（約40分）。または羽田→青森空港＋リムジンバス。</p>
+        <p><span class="section-title">アクセス時間:</span> 約220分</p>
+        <p><span class="section-title">宿泊:</span> 弘前市内のホテル（ドーミーイン弘前、天然温泉大浴場付き）または大鰐温泉の旅館。</p>
+        <p><span class="section-title">観光/寄り道:</span> 弘前公園内の約2,000本のソメイヨシノ、外濠の「花筏」、露店、ライトアップ、津軽藩ねぷた村の体験。</p>
+        <p><span class="section-title">概算費用:</span> 約6～7万円</p>
+        <p><span class="section-title">花見時期:</span> 例年4月下旬～5月上旬</p>
+        <p><span class="section-title">観光のポイント:</span> 天守と桜、歴史的な公園の佇まい、津軽文化体験が魅力。</p>
+        <hr>
+        <p><strong>動画例: 弘前公園 桜祭り 〜日本三大桜名所の一つ〜</strong></p>
+        <p>弘前公園の約2,000本の桜と祭りの様子を収録した動画です。</p>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/def456UVW" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      `,
+      plan3: `
+        <h2>プラン3: 長野・高遠城址公園＆上諏訪温泉</h2>
+        <p><span class="section-title">アクセス:</span> 新宿駅からJR特急あずさ号で岡谷・茅野駅へ（約2時間15分）。茅野駅から高遠行き臨時バスまたは、JR飯田線・伊那市駅＋路線バスでアクセス。</p>
+        <p><span class="section-title">アクセス時間:</span> 約135分</p>
+        <p><span class="section-title">宿泊:</span> 茅野駅方面から上諏訪温泉へ（JRで約10分）。老舗旅館やモダンホテルが選べます。</p>
+        <p><span class="section-title">観光/寄り道:</span> 高遠城址公園の約1,500本の桜、展望台、夜桜ライトアップ、地元B級グルメ。</p>
+        <p><span class="section-title">概算費用:</span> 約5万円</p>
+        <p><span class="section-title">花見時期:</span> 例年4月上旬～中旬</p>
+        <p><span class="section-title">観光のポイント:</span> 桜並木と温泉で癒やす充実の春旅。</p>
+        <hr>
+        <p><strong>動画例: 高遠城址公園 桜＆温泉旅</strong></p>
+        <p>高遠城址公園の桜と、上諏訪温泉の癒しの風景が楽しめる動画です。</p>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/ghi789RST" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      `,
+      plan4: `
+        <h2>プラン4: 秋田・角館＆乳頭温泉郷</h2>
+        <p><span class="section-title">アクセス:</span> 東京駅から秋田新幹線こまち号で角館駅へ（約3時間10分）。駅から徒歩または路線バスで武家屋敷エリアへ。田沢湖経由で乳頭温泉郷へアクセス。</p>
+        <p><span class="section-title">アクセス時間:</span> 約190分</p>
+        <p><span class="section-title">宿泊:</span> 乳頭温泉郷の秘湯旅館やホテル。</p>
+        <p><span class="section-title">観光/寄り道:</span> 角館の武家屋敷通りの桜散策、観光馬車体験、乳頭温泉の情緒ある雰囲気。</p>
+        <p><span class="section-title">概算費用:</span> 約6～6.5万円</p>
+        <p><span class="section-title">花見時期:</span> 例年4月下旬</p>
+        <p><span class="section-title">観光のポイント:</span> 歴史ある町並みと武家屋敷のしだれ桜、秘湯乳頭温泉の癒し。</p>
+        <hr>
+        <p><strong>動画例: 角館の桜と情緒あふれる温泉宿</strong></p>
+        <p>角館の武家屋敷通りの桜と乳頭温泉郷の雰囲気を伝える動画です。</p>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/jkl012MNO" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      `,
+      plan5: `
+        <h2>プラン5: 岩手・北上展勝地＆花巻温泉</h2>
+        <p><span class="section-title">アクセス:</span> 東京駅から東北新幹線やまびこ号で北上駅へ（約2時間40分）。北上駅から展勝地公園へはシャトルバスまたは徒歩でアクセス。夜は花巻温泉へ移動。</p>
+        <p><span class="section-title">アクセス時間:</span> 約175分</p>
+        <p><span class="section-title">宿泊:</span> 花巻温泉郷の大型旅館やビジネスホテル。</p>
+        <p><span class="section-title">観光/寄り道:</span> 北上展勝地の桜並木観賞や、花巻の宮沢賢治記念館など。</p>
+        <p><span class="section-title">概算費用:</span> 約6万円</p>
+        <p><span class="section-title">花見時期:</span> 北上展勝地は4月中旬～下旬</p>
+        <p><span class="section-title">観光のポイント:</span> 壮大な桜並木と北上川の風景、ライトアップされた夜桜。</p>
+        <hr>
+        <p><strong>動画例: 北上展勝地の桜＆花巻温泉巡り</strong></p>
+        <p>岩手県北上展勝地の壮大な桜と、花巻温泉の温かみある宿泊施設の様子を収録。</p>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/mno345PQR" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      `,
+      plan6: `
+        <h2>プラン6: 宮城・白石川堤＆秋保温泉</h2>
+        <p><span class="section-title">アクセス:</span> 東京駅から東北新幹線で仙台駅へ（約1時間40分）。仙台駅からJR東北本線または船岡駅へ下車し、徒歩で白石川堤へ。夕方、仙台駅からバスで秋保温泉へ移動。</p>
+        <p><span class="section-title">アクセス時間:</span> 約140分</p>
+        <p><span class="section-title">宿泊:</span> 秋保温泉の老舗旅館。</p>
+        <p><span class="section-title">観光/寄り道:</span> 白石川堤の桜観賞、船岡城址公園、露店グルメ、秋保大滝や仙台市内観光。</p>
+        <p><span class="section-title">概算費用:</span> 約5～6万円</p>
+        <p><span class="section-title">花見時期:</span> 白石川堤は例年4月上旬～中旬</p>
+        <p><span class="section-title">観光のポイント:</span> 千本以上の桜と蔵王連峰を背景にした夜桜。</p>
+        <hr>
+        <p><strong>動画例 (桜): 白石川堤 桜ライトアップ in 仙台</strong></p>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/pqr678STU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p><strong>動画例 (温泉): 秋保温泉 〜極上のお湯と美食〜</strong></p>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/stu901VWX" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      `,
+      plan7: `
+        <h2>プラン7: 福島・花見山公園＆飯坂温泉</h2>
+        <p><span class="section-title">アクセス:</span> 東京駅から東北新幹線で福島駅へ（約1時間40分）。福島駅東口から臨時直行バスで花見山公園へ。</p>
+        <p><span class="section-title">アクセス時間:</span> 約140分</p>
+        <p><span class="section-title">宿泊:</span> 飯坂温泉の老舗旅館。</p>
+        <p><span class="section-title">観光/寄り道:</span> 花見山公園の桜と、飯坂温泉周辺の散策。</p>
+        <p><span class="section-title">概算費用:</span> 約4～5万円</p>
+        <p><span class="section-title">花見時期:</span> 花見山公園は例年3月下旬～4月中旬</p>
+        <p><span class="section-title">観光のポイント:</span> 里山の桜と桃のコントラスト、豊かな自然と温泉の癒し。</p>
+        <hr>
+        <p><strong>動画例: 福島 花見山公園のお花見風景＆飯坂温泉</strong></p>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/vwx234YZA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      `,
+      plan8: `
+        <h2>プラン8: 福島・会津若松 鶴ヶ城＆東山温泉</h2>
+        <p><span class="section-title">アクセス:</span> 東京駅から東北新幹線で郡山駅へ、磐越西線で会津若松駅下車し、周遊バスで鶴ヶ城北口へ。</p>
+        <p><span class="section-title">アクセス時間:</span> 約160分</p>
+        <p><span class="section-title">宿泊:</span> 東山温泉の老舗旅館。</p>
+        <p><span class="section-title">観光/寄り道:</span> 鶴ヶ城の桜観賞、会津武家屋敷、飯盛山などの散策。</p>
+        <p><span class="section-title">概算費用:</span> 約5～6万円</p>
+        <p><span class="section-title">花見時期:</span> 平地では4月中旬～下旬</p>
+        <p><span class="section-title">観光のポイント:</span> 鶴ヶ城の桜と歴史、伝統文化、温泉の融合。</p>
+        <hr>
+        <p><strong>動画例: 会津若松 鶴ヶ城 桜と歴史の調和</strong></p>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/yza567BCD" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      `,
+      plan9: `
+        <h2>プラン9: 岡山・津山城＆湯郷温泉</h2>
+        <p><span class="section-title">アクセス:</span> 東京駅から東海道・山陽新幹線で岡山駅へ、津山線で津山駅へ、徒歩10分または空港バスでアクセス。</p>
+        <p><span class="section-title">アクセス時間:</span> 約290分</p>
+        <p><span class="section-title">宿泊:</span> 美作湯郷温泉の伝統旅館。</p>
+        <p><span class="section-title">観光/寄り道:</span> 津山城の桜観賞、城下町散策、湯郷温泉周辺の散策。</p>
+        <p><span class="section-title">概算費用:</span> 約6.5～7万円</p>
+        <p><span class="section-title">花見時期:</span> 例年4月上旬</p>
+        <p><span class="section-title">観光のポイント:</span> 桜と歴史ある城跡のコントラスト、ライトアップ。</p>
+        <hr>
+        <p><strong>動画例: 津山城のお花見＆湯郷温泉体験</strong></p>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/zab890EFG" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      `,
+      plan10: `
+        <h2>プラン10: 群馬・赤城南面＆伊香保温泉</h2>
+        <p><span class="section-title">アクセス:</span> 上野駅からJR高崎線または上越新幹線で前橋駅へ、前橋駅南口から有料シャトルバスで赤城南面へ。</p>
+        <p><span class="section-title">アクセス時間:</span> 約150分</p>
+        <p><span class="section-title">宿泊:</span> 伊香保温泉の老舗旅館やホテル。</p>
+        <p><span class="section-title">観光/寄り道:</span> 赤城南面の桜並木と、伊香保温泉周辺の散策。</p>
+        <p><span class="section-title">概算費用:</span> 約3.5～4.5万円</p>
+        <p><span class="section-title">花見時期:</span> 赤城南面桜は例年4月上旬～中旬</p>
+        <p><span class="section-title">観光のポイント:</span> 桜並木と菜の花のコントラスト、温泉情緒、非日常の旅。</p>
+        <hr>
+        <p><strong>動画例 (桜): 赤城南面 千本桜の奇跡</strong></p>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/abc987HIJ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p><strong>動画例 (温泉): 伊香保温泉 情緒あふれる宿の魅力</strong></p>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/def654KLM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      `
+    };
+
+    // タブ要素の設定
+    const tabs = document.querySelectorAll('.tab');
+    const planContent = document.getElementById('planContent');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        tabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        const planKey = this.getAttribute('data-tab');
+        planContent.innerHTML = plans[planKey];
+      });
+      tab.addEventListener('mouseenter', function() {
+        this.style.backgroundColor = '#ddd';
+      });
+      tab.addEventListener('mouseleave', function() {
+        if (!this.classList.contains('active')) {
+          this.style.backgroundColor = '#eee';
+        }
+      });
+    });
+
+    // D3.jsを用いた概算費用比較のバーグラフ
+    const costData = [
+      { plan: 'プラン1', cost: 6.5 },
+      { plan: 'プラン2', cost: 6.5 },
+      { plan: 'プラン3', cost: 5 },
+      { plan: 'プラン4', cost: 6.5 },
+      { plan: 'プラン5', cost: 6 },
+      { plan: 'プラン6', cost: 5.5 },
+      { plan: 'プラン7', cost: 4.5 },
+      { plan: 'プラン8', cost: 5.5 },
+      { plan: 'プラン9', cost: 7 },
+      { plan: 'プラン10', cost: 4 }
+    ];
+
+    const svg = d3.select("svg");
+    const margin = { top: 20, right: 20, bottom: 40, left: 40 };
+    const width = parseInt(svg.style("width")) - margin.left - margin.right;
+    const height = parseInt(svg.style("height")) - margin.top - margin.bottom;
+    const chart = svg.append("g")
+                     .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    const xScale = d3.scaleBand()
+                     .domain(costData.map(d => d.plan))
+                     .range([0, width])
+                     .padding(0.1);
+
+    const yScale = d3.scaleLinear()
+                     .domain([0, d3.max(costData, d => d.cost) + 1])
+                     .range([height, 0]);
+
+    chart.append("g")
+         .attr("transform", `translate(0, ${height})`)
+         .call(d3.axisBottom(xScale))
+         .selectAll("text")
+         .attr("transform", "rotate(-45)")
+         .style("text-anchor", "end");
+
+    chart.append("g")
+         .call(d3.axisLeft(yScale));
+
+    chart.selectAll(".bar")
+         .data(costData)
+         .enter()
+         .append("rect")
+         .attr("class", "bar")
+         .attr("x", d => xScale(d.plan))
+         .attr("y", d => yScale(d.cost))
+         .attr("width", xScale.bandwidth())
+         .attr("height", d => height - yScale(d.cost))
+         .attr("fill", "#3498db")
+         .on("mouseover", function(event, d) {
+           d3.select(this).attr("fill", "#2980b9");
+           tooltip.style.opacity = 1;
+           tooltip.innerHTML = `${d.plan}: 約${d.cost}万円`;
+         })
+         .on("mousemove", function(event) {
+           tooltip.style.left = (event.pageX + 10) + "px";
+           tooltip.style.top = (event.pageY - 28) + "px";
+         })
+         .on("mouseout", function() {
+           d3.select(this).attr("fill", "#3498db");
+           tooltip.style.opacity = 0;
+         });
+
+    const tooltip = document.getElementById("tooltip");
+
+    const accessData = [
+      { plan: 'プラン1', time: 270 },
+      { plan: 'プラン2', time: 220 },
+      { plan: 'プラン3', time: 135 },
+      { plan: 'プラン4', time: 190 },
+      { plan: 'プラン5', time: 175 },
+      { plan: 'プラン6', time: 140 },
+      { plan: 'プラン7', time: 140 },
+      { plan: 'プラン8', time: 160 },
+      { plan: 'プラン9', time: 290 },
+      { plan: 'プラン10', time: 150 }
+    ];
+
+    const lineSvg = d3.select("#lineChartSvg");
+    const lineMargin = { top: 20, right: 20, bottom: 40, left: 40 };
+    const lineWidth = parseInt(lineSvg.style("width")) - lineMargin.left - lineMargin.right;
+    const lineHeight = parseInt(lineSvg.style("height")) - lineMargin.top - lineMargin.bottom;
+    const lineChartGroup = lineSvg.append("g")
+                                  .attr("transform", `translate(${lineMargin.left}, ${lineMargin.top})`);
+
+    const xScaleLine = d3.scalePoint()
+                         .domain(accessData.map(d => d.plan))
+                         .range([0, lineWidth])
+                         .padding(0.5);
+
+    const yScaleLine = d3.scaleLinear()
+                         .domain([0, d3.max(accessData, d => d.time) + 20])
+                         .range([lineHeight, 0]);
+
+    lineChartGroup.append("g")
+                  .attr("transform", `translate(0, ${lineHeight})`)
+                  .call(d3.axisBottom(xScaleLine))
+                  .selectAll("text")
+                  .attr("transform", "rotate(-45)")
+                  .style("text-anchor", "end");
+
+    lineChartGroup.append("g")
+                  .call(d3.axisLeft(yScaleLine));
+
+    const lineGenerator = d3.line()
+                            .x(d => xScaleLine(d.plan))
+                            .y(d => yScaleLine(d.time));
+
+    lineChartGroup.append("path")
+                  .datum(accessData)
+                  .attr("fill", "none")
+                  .attr("stroke", "#e74c3c")
+                  .attr("stroke-width", 2)
+                  .attr("d", lineGenerator);
+
+    lineChartGroup.selectAll(".dot")
+                  .data(accessData)
+                  .enter()
+                  .append("circle")
+                  .attr("class", "dot")
+                  .attr("cx", d => xScaleLine(d.plan))
+                  .attr("cy", d => yScaleLine(d.time))
+                  .attr("r", 4)
+                  .attr("fill", "#e74c3c");
+
+    function loadDataAsync() {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(costData);
+        }, 500);
+      });
+    }
+    loadDataAsync().then(loadedData => {
+      console.log("非同期に費用データがロードされました:", loadedData);
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const lazyComponents = document.querySelectorAll("[data-lazy]");
+      lazyComponents.forEach(component => {
+        setTimeout(() => {
+          component.innerHTML = component.getAttribute("data-lazy");
+        }, 300);
+      });
+    });
+  </script>
+</body>
+</html>
