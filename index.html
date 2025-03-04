@@ -179,7 +179,7 @@
     <div class="content">
       <!-- プラン詳細エリア -->
       <div id="planContent" class="plan-details">
-        <!-- 初期表示はプラン1（下記は元々のテキスト） -->
+        <!-- 初期表示はプラン1 -->
         <h2>プラン1: 奈良・吉野山</h2>
         <p><span class="section-title">アクセス:</span> 東京駅から新幹線で京都駅または新大阪駅へ、近鉄特急に乗り換え大和八木・橿原神宮前経由で吉野駅下車。</p>
         <p><span class="section-title">アクセス時間:</span> 約270分</p>
@@ -210,7 +210,7 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <!-- JavaScript：タブ切替・プラン内容更新とチャート描画 -->
   <script>
-    // 各プランのテキスト内容に、元々のテキストに加え、動画を埋め込むHTMLを定義
+    // 各プランのテキスト内容に、動画の埋め込み部分は削除し、動画例のタイトルと説明のみを記載
     const plans = {
       plan1: `
         <h2>プラン1: 奈良・吉野山</h2>
@@ -222,9 +222,8 @@
         <p><span class="section-title">花見時期:</span> 例年4月上旬～中旬</p>
         <p><span class="section-title">ポイント:</span> 約3万本の桜が階層的に咲き誇る圧巻の景色。歴史と文化も豊か。</p>
         <hr>
-        <p><strong>動画例: 【吉野山 桜】〜感動の吉野桜ドライブ〜</strong></p>
-        <p>奈良・吉野山の満開の桜とドライブ中の絶景を収めた動画です。</p>
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/abc123XYZ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p><strong>動画例 (桜):</strong> 「【吉野山 桜】〜感動の吉野桜ドライブ〜」<br>
+        （この動画は吉野山の桜の美しい情景を伝える内容です。）</p>
       `,
       plan2: `
         <h2>プラン2: 青森・弘前公園</h2>
@@ -236,13 +235,12 @@
         <p><span class="section-title">花見時期:</span> 例年4月下旬～5月上旬</p>
         <p><span class="section-title">観光のポイント:</span> 天守と桜、歴史的な公園の佇まい、津軽文化体験が魅力。</p>
         <hr>
-        <p><strong>動画例: 弘前公園 桜祭り 〜日本三大桜名所の一つ〜</strong></p>
-        <p>弘前公園の約2,000本の桜と祭りの様子を収録した動画です。</p>
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/def456UVW" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p><strong>動画例 (桜):</strong> 「弘前公園 桜祭り〜日本三大桜名所の一つ〜」<br>
+        （この動画は弘前公園の満開の桜と祭りの様子を収録したものです。）</p>
       `,
       plan3: `
         <h2>プラン3: 長野・高遠城址公園＆上諏訪温泉</h2>
-        <p><span class="section-title">アクセス:</span> 新宿駅からJR特急あずさ号で岡谷・茅野駅へ（約2時間15分）。茅野駅から高遠行き臨時バスまたは、JR飯田線・伊那市駅＋路線バスでアクセス。</p>
+        <p><span class="section-title">アクセス:</span> 新宿駅からJR特急あずさ号で岡谷・茅野駅へ（約2時間15分）。茅野駅から高遠行き臨時バスまたはJR飯田線・伊那市駅＋路線バスでアクセス.</p>
         <p><span class="section-title">アクセス時間:</span> 約135分</p>
         <p><span class="section-title">宿泊:</span> 茅野駅方面から上諏訪温泉へ（JRで約10分）。老舗旅館やモダンホテルが選べます。</p>
         <p><span class="section-title">観光/寄り道:</span> 高遠城址公園の約1,500本の桜、展望台、夜桜ライトアップ、地元B級グルメ。</p>
@@ -250,9 +248,8 @@
         <p><span class="section-title">花見時期:</span> 例年4月上旬～中旬</p>
         <p><span class="section-title">観光のポイント:</span> 桜並木と温泉で癒やす充実の春旅。</p>
         <hr>
-        <p><strong>動画例: 高遠城址公園 桜＆温泉旅</strong></p>
-        <p>高遠城址公園の桜と、上諏訪温泉の癒しの風景が楽しめる動画です。</p>
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/ghi789RST" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p><strong>動画例 (桜＆温泉):</strong> 「高遠城址公園 桜＆上諏訪温泉の癒し旅」<br>
+        （高遠の桜と温泉情緒を伝える映像です。）</p>
       `,
       plan4: `
         <h2>プラン4: 秋田・角館＆乳頭温泉郷</h2>
@@ -264,38 +261,36 @@
         <p><span class="section-title">花見時期:</span> 例年4月下旬</p>
         <p><span class="section-title">観光のポイント:</span> 歴史ある町並みと武家屋敷のしだれ桜、秘湯乳頭温泉の癒し。</p>
         <hr>
-        <p><strong>動画例: 角館の桜と情緒あふれる温泉宿</strong></p>
-        <p>角館の武家屋敷通りの桜と乳頭温泉郷の雰囲気を伝える動画です。</p>
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/jkl012MNO" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p><strong>動画例 (桜＆温泉):</strong> 「角館の桜と乳頭温泉の情緒」<br>
+        （角館の桜と温泉宿の雰囲気を伝える動画です。）</p>
       `,
       plan5: `
         <h2>プラン5: 岩手・北上展勝地＆花巻温泉</h2>
         <p><span class="section-title">アクセス:</span> 東京駅から東北新幹線やまびこ号で北上駅へ（約2時間40分）。北上駅から展勝地公園へはシャトルバスまたは徒歩でアクセス。夜は花巻温泉へ移動。</p>
         <p><span class="section-title">アクセス時間:</span> 約175分</p>
         <p><span class="section-title">宿泊:</span> 花巻温泉郷の大型旅館やビジネスホテル。</p>
-        <p><span class="section-title">観光/寄り道:</span> 北上展勝地の桜並木観賞や、花巻の宮沢賢治記念館など。</p>
+        <p><span class="section-title">観光/寄り道:</span> 北上展勝地の桜並木観賞、花巻の宮沢賢治記念館など。</p>
         <p><span class="section-title">概算費用:</span> 約6万円</p>
         <p><span class="section-title">花見時期:</span> 北上展勝地は4月中旬～下旬</p>
         <p><span class="section-title">観光のポイント:</span> 壮大な桜並木と北上川の風景、ライトアップされた夜桜。</p>
         <hr>
-        <p><strong>動画例: 北上展勝地の桜＆花巻温泉巡り</strong></p>
-        <p>岩手県北上展勝地の壮大な桜と、花巻温泉の温かみある宿泊施設の様子を収録。</p>
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/mno345PQR" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p><strong>動画例 (桜＆温泉):</strong> 「北上展勝地の桜と花巻温泉巡り」<br>
+        （北上展勝地の壮大な桜と花巻温泉の様子を収めた映像です。）</p>
       `,
       plan6: `
         <h2>プラン6: 宮城・白石川堤＆秋保温泉</h2>
         <p><span class="section-title">アクセス:</span> 東京駅から東北新幹線で仙台駅へ（約1時間40分）。仙台駅からJR東北本線または船岡駅へ下車し、徒歩で白石川堤へ。夕方、仙台駅からバスで秋保温泉へ移動。</p>
         <p><span class="section-title">アクセス時間:</span> 約140分</p>
         <p><span class="section-title">宿泊:</span> 秋保温泉の老舗旅館。</p>
-        <p><span class="section-title">観光/寄り道:</span> 白石川堤の桜観賞、船岡城址公園、露店グルメ、秋保大滝や仙台市内観光。</p>
+        <p><span class="section-title">観光/寄り道:</span> 白石川堤の桜観賞、船岡城址公園、秋保大滝、仙台市内観光。</p>
         <p><span class="section-title">概算費用:</span> 約5～6万円</p>
         <p><span class="section-title">花見時期:</span> 白石川堤は例年4月上旬～中旬</p>
         <p><span class="section-title">観光のポイント:</span> 千本以上の桜と蔵王連峰を背景にした夜桜。</p>
         <hr>
-        <p><strong>動画例 (桜): 白石川堤 桜ライトアップ in 仙台</strong></p>
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/pqr678STU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        <p><strong>動画例 (温泉): 秋保温泉 〜極上のお湯と美食〜</strong></p>
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/stu901VWX" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p><strong>動画例 (桜):</strong> 「白石川堤 桜ライトアップ in 仙台」<br>
+        （白石川堤の桜の美しいライトアップ映像。）</p>
+        <p><strong>動画例 (温泉):</strong> 「秋保温泉 〜極上のお湯と美食〜」<br>
+        （秋保温泉の温泉宿の魅力を伝える映像。）</p>
       `,
       plan7: `
         <h2>プラン7: 福島・花見山公園＆飯坂温泉</h2>
@@ -307,21 +302,21 @@
         <p><span class="section-title">花見時期:</span> 花見山公園は例年3月下旬～4月中旬</p>
         <p><span class="section-title">観光のポイント:</span> 里山の桜と桃のコントラスト、豊かな自然と温泉の癒し。</p>
         <hr>
-        <p><strong>動画例: 福島 花見山公園のお花見風景＆飯坂温泉</strong></p>
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/vwx234YZA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p><strong>動画例:</strong> 「福島 花見山公園のお花見風景＆飯坂温泉」<br>
+        （花見山公園と飯坂温泉の魅力を伝える映像。）</p>
       `,
       plan8: `
         <h2>プラン8: 福島・会津若松 鶴ヶ城＆東山温泉</h2>
         <p><span class="section-title">アクセス:</span> 東京駅から東北新幹線で郡山駅へ、磐越西線で会津若松駅下車し、周遊バスで鶴ヶ城北口へ。</p>
         <p><span class="section-title">アクセス時間:</span> 約160分</p>
         <p><span class="section-title">宿泊:</span> 東山温泉の老舗旅館。</p>
-        <p><span class="section-title">観光/寄り道:</span> 鶴ヶ城の桜観賞、会津武家屋敷、飯盛山などの散策。</p>
+        <p><span class="section-title">観光/寄り道:</span> 鶴ヶ城の桜観賞、会津武家屋敷、飯盛山など。</p>
         <p><span class="section-title">概算費用:</span> 約5～6万円</p>
         <p><span class="section-title">花見時期:</span> 平地では4月中旬～下旬</p>
         <p><span class="section-title">観光のポイント:</span> 鶴ヶ城の桜と歴史、伝統文化、温泉の融合。</p>
         <hr>
-        <p><strong>動画例: 会津若松 鶴ヶ城 桜と歴史の調和</strong></p>
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/yza567BCD" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p><strong>動画例:</strong> 「会津若松 鶴ヶ城 桜と歴史の調和」<br>
+        （鶴ヶ城の夜桜ライトアップと歴史情緒を伝える映像。）</p>
       `,
       plan9: `
         <h2>プラン9: 岡山・津山城＆湯郷温泉</h2>
@@ -333,8 +328,8 @@
         <p><span class="section-title">花見時期:</span> 例年4月上旬</p>
         <p><span class="section-title">観光のポイント:</span> 桜と歴史ある城跡のコントラスト、ライトアップ。</p>
         <hr>
-        <p><strong>動画例: 津山城のお花見＆湯郷温泉体験</strong></p>
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/zab890EFG" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p><strong>動画例:</strong> 「津山城のお花見＆湯郷温泉体験」<br>
+        （津山城と湯郷温泉の雰囲気を伝える映像。）</p>
       `,
       plan10: `
         <h2>プラン10: 群馬・赤城南面＆伊香保温泉</h2>
@@ -346,10 +341,10 @@
         <p><span class="section-title">花見時期:</span> 赤城南面桜は例年4月上旬～中旬</p>
         <p><span class="section-title">観光のポイント:</span> 桜並木と菜の花のコントラスト、温泉情緒、非日常の旅。</p>
         <hr>
-        <p><strong>動画例 (桜): 赤城南面 千本桜の奇跡</strong></p>
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/abc987HIJ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        <p><strong>動画例 (温泉): 伊香保温泉 情緒あふれる宿の魅力</strong></p>
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/def654KLM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p><strong>動画例 (桜):</strong> 「赤城南面 千本桜の奇跡」<br>
+        （赤城南面の桜並木の美しさを伝える映像。）</p>
+        <p><strong>動画例 (温泉):</strong> 「伊香保温泉 情緒あふれる宿の魅力」<br>
+        （伊香保温泉の宿泊施設の魅力を紹介する映像。）</p>
       `
     };
 
